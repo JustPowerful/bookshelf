@@ -4,6 +4,10 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "db:seed": "turbo db:seed",
+    "db:generate": "turbo db:generate",
+    "db:migrate": "turbo db:migrate",
+    "db:studio": "turbo db:studio",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
