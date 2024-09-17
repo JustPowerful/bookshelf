@@ -8,6 +8,13 @@
       "when": 1726356257943,
       "tag": "0000_fat_frank_castle",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1726435654180,
+      "tag": "0001_lovely_korvac",
+      "breakpoints": true
     }
   ]
 }
