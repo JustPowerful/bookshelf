@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
-import { JWT } from "next-auth/jwt";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -12,7 +11,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
   },
-
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -24,6 +23,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
         if (!credentials?.email || !credentials?.password) {

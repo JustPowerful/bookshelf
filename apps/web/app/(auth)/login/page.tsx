@@ -12,8 +12,6 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { registerUser } from "../actions";
-import { useFormState, useFormStatus } from "react-dom";
 
 // import { Loader2 as Spinner } from "lucide-react";
 
