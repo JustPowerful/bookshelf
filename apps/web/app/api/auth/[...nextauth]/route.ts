@@ -4,6 +4,15 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string | undefined | null;
+      email: string | undefined | null;
+    };
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -63,8 +72,8 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token) {
-        session.user.email = token.email;
-        session.user.id = token.sub;
+        session.user!.email = token.email;
+        session.user!.id = token.sub;
       }
       return session;
     },
