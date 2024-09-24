@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { db, eq, users } from "@repo/database";
 
+// add a simple comment
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
