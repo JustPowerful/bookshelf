@@ -11,7 +11,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { Axis3DIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { registerUser } from "../actions";
 import { useFormState, useFormStatus } from "react-dom";
 

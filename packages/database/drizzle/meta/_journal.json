@@ -15,6 +15,27 @@
       "when": 1726435654180,
       "tag": "0001_lovely_korvac",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1726945135655,
+      "tag": "0002_abandoned_forge",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1726945464682,
+      "tag": "0003_massive_magneto",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1726946332265,
+      "tag": "0004_chunky_nomad",
+      "breakpoints": true
     }
   ]
 }

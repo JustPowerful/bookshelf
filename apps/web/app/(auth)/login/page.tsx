@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 
 interface Props {}
 
-export default function RegisterForm() {
+export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

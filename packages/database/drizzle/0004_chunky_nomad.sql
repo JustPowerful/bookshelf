@@ -1,0 +1,1 @@
+ALTER TABLE "bookshelf" RENAME COLUMN "userId" TO "user_id";

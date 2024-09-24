@@ -1,0 +1,1 @@
+ALTER TABLE "bookshelf" ADD COLUMN "userId" integer NOT NULL;

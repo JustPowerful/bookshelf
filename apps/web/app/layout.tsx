@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { Poppins } from "next/font/google";
+import SessionProvider from "@/components/providers/session-provider";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -29,12 +30,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.className}`}
-      >
-        <Navbar />
-        {children}
-      </body>
+      <SessionProvider>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} ${poppins.className} mt-16`}
+        >
+          <Navbar />
+          {children}
+        </body>
+      </SessionProvider>
     </html>
   );
 }

@@ -9,6 +9,24 @@ export const users = pgTable("users", {
   password: varchar("password").notNull(),
 });
 
+export const bookshelf = pgTable("bookshelf", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 100 }).notNull(),
+  description: varchar("description", { length: 255 }).notNull(),
+  userId: integer("user_id").notNull(),
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
+  bookshelf: many(bookshelf),
+}));
+
+export const bookshelfRelations = relations(bookshelf, ({ one }) => ({
+  users: one(users, {
+    fields: [bookshelf.userId],
+    references: [users.id],
+  }),
+}));
+
 // export const posts = pgTable("posts", {
 //   id: serial("id").primaryKey(),
 //   title: varchar("title").notNull(),
