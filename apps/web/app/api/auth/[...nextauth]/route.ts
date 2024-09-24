@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import { authOptions } from "@/utils/auth-options";
+import { authOptions } from "@/../utils/auth-options";
 declare module "next-auth" {
   interface Session {
     user: {
