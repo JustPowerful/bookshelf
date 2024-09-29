@@ -1,5 +1,4 @@
 import { Check } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
 import Button3D from "@/components/ui/button3d";
 
 export default function Page() {

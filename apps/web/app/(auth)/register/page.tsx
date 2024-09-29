@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,11 +13,10 @@ import {
 } from "@/components/ui/card";
 import { Axis3DIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { registerUser } from "../actions";
-import { useFormState, useFormStatus } from "react-dom";
+// useActionState
+import { useFormStatus } from "react-dom";
 
 import { Loader2 as Spinner } from "lucide-react";
-
-interface Props {}
 
 function FormButton() {
   const { pending } = useFormStatus();
@@ -31,7 +30,7 @@ function FormButton() {
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [error, formAction] = useFormState(registerUser, undefined);
+  const [error, formAction] = useActionState(registerUser, undefined);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

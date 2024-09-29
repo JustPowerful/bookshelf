@@ -25,11 +25,13 @@ export default function Navbar() {
             <Link href="/" className="flex-shrink-0 flex items-center">
               <span className="text-2xl font-bold text-primary">Bookshelf</span>
             </Link>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <NavLink href="/">Home</NavLink>
-              <NavLink href="/pricing">Pricing</NavLink>
-              <NavLink href="/about">About Us</NavLink>
-            </div>
+            {status !== "authenticated" && (
+              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+                <NavLink href="/">Home</NavLink>
+                <NavLink href="/pricing">Pricing</NavLink>
+                <NavLink href="/about">About Us</NavLink>
+              </div>
+            )}
           </div>
           {status !== "loading" ? (
             <>

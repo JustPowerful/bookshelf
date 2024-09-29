@@ -1,21 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { BookOpen, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { addBookshelf } from "./actions";
+import { Input } from "@/components/ui/input";
+
+
+async function bookshelfForm() {
+  const [state, formAction] = useActionState(addBookshelf, undefined);
+  return (
+    <div>
+      <form action={formAction}>
+        <Input type="text" placeholder="Title of the bookshelf" />
+        <Input type="text" placeholder="Description of the bookshelf" />
+        <Button type="submit">Add</Button>
+      </form>
+    </div>
+  );
+}
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<
     "profile" | "bookshelves" | "settings"
   >("profile");
+  const [bookshelves, setBookshelves] = useState<
+    {
+      id: number;
+      title: string;
+    }[]
+  >([]);
 
-  const bookshelves = [
-    { id: 1, name: "Fiction", books: 12 },
-    { id: 2, name: "Non-fiction", books: 8 },
-    { id: 3, name: "Technical", books: 15 },
-    { id: 4, name: "Documents", books: 5 },
-  ];
+  async function getBookshelves() {
+    try {
+      const response = await fetch("/api/bookshelves");
+      const data = await response.json();
+      setBookshelves(data.bookshelves);
+    } catch (error) {
+      console.error("Error fetching bookshelves:", error);
+    }
+  }
+
+  useEffect(() => {
+    getBookshelves();
+  }, []);
+
+  // const bookshelves = [
+  //   { id: 1, name: "Fiction", books: 12 },
+  //   { id: 2, name: "Non-fiction", books: 8 },
+  //   { id: 3, name: "Technical", books: 15 },
+  //   { id: 4, name: "Documents", books: 5 },
+  // ];
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -87,6 +123,17 @@ export default function Dashboard() {
 
         {activeTab === "bookshelves" && (
           <div>
+            <div className="flex justify-center mb-4">
+              {" "}
+              {/* <UploadButton
+                className="cursor-pointer bg-red-500 text-white w-fit p-2 rounded-md"
+                endpoint="pdfUploader"
+                onClientUploadComplete={() => {
+                  router.refresh();
+                }}
+              /> */}
+              <Button>Create a Bookshelf</Button>
+            </div>
             <h2 className="text-2xl font-bold mb-4">Bookshelves</h2>
             <ScrollArea className="h-[calc(100vh-12rem)] rounded-md border p-4">
               {bookshelves.map((shelf) => (
@@ -94,8 +141,8 @@ export default function Dashboard() {
                   key={shelf.id}
                   className="mb-4 p-4 bg-white rounded-lg shadow"
                 >
-                  <h3 className="text-lg font-semibold">{shelf.name}</h3>
-                  <p className="text-sm text-gray-500">{shelf.books} items</p>
+                  <h3 className="text-lg font-semibold">{shelf.title}</h3>
+                  {/* <p className="text-sm text-gray-500">{shelf.books} items</p> */}
                   <Button variant="outline" size="sm" className="mt-2">
                     View Contents
                   </Button>
