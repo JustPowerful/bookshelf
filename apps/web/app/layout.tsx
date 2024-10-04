@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import { Poppins } from "next/font/google";
 import SessionProvider from "@/components/providers/session-provider";
+import QueryProvider from "@/components/providers/query-provider";
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -31,12 +32,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionProvider>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} ${poppins.className} mt-16`}
-        >
-          <Navbar />
-          {children}
-        </body>
+        <QueryProvider>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} ${poppins.className} mt-16`}
+          >
+            <Navbar />
+            {children}
+          </body>
+        </QueryProvider>
       </SessionProvider>
     </html>
   );

@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgTable,
+  serial,
+  text,
+  varchar,
+  vector,
+} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -16,52 +23,47 @@ export const bookshelf = pgTable("bookshelf", {
   userId: integer("user_id").notNull(),
 });
 
+export const books = pgTable("books", {
+  id: serial("id").primaryKey(),
+  fileUrl: varchar("file_url", { length: 255 }).notNull(),
+  title: varchar("title", { length: 100 }).notNull(),
+  description: varchar("description", { length: 255 }), // could be null
+  bookshelfId: integer("bookshelf_id").notNull(),
+});
+
+export const booksRelations = relations(books, ({ one }) => ({
+  bookshelf: one(bookshelf, {
+    fields: [books.bookshelfId],
+    references: [bookshelf.id],
+  }),
+}));
+
 export const usersRelations = relations(users, ({ many }) => ({
   bookshelf: many(bookshelf),
 }));
 
-export const bookshelfRelations = relations(bookshelf, ({ one }) => ({
+export const bookshelfRelations = relations(bookshelf, ({ one, many }) => ({
   users: one(users, {
     fields: [bookshelf.userId],
     references: [users.id],
   }),
+  books: many(books),
+  documents: many(documents),
 }));
 
-// export const posts = pgTable("posts", {
-//   id: serial("id").primaryKey(),
-//   title: varchar("title").notNull(),
-//   content: text("content").notNull(),
-//   authorId: integer("author_id")
-//     .references(() => users.id, { onDelete: "cascade" })
-//     .notNull(),
-// });
+// these are used to store the embedding of the books
+export const documents = pgTable("documents", {
+  id: serial("id").primaryKey(),
+  content: text("content"),
+  embedding: vector("embedding", {
+    dimensions: 1024,
+  }).notNull(),
+  bookshelfId: integer("bookshelf_id").notNull(),
+});
 
-// export const comments = pgTable("comments", {
-//   id: serial("id").primaryKey(),
-//   text: text("text"),
-//   authorId: integer("author_id")
-//     .references(() => users.id, { onDelete: "cascade" })
-//     .notNull(),
-//   postId: integer("post_id")
-//     .references(() => posts.id, { onDelete: "cascade" })
-//     .notNull(),
-// });
-
-// export const usersRelations = relations(users, ({ many }) => ({
-//   posts: many(posts),
-// }));
-
-// export const postsRelations = relations(posts, ({ one, many }) => ({
-//   author: one(users, {
-//     fields: [posts.authorId],
-//     references: [users.id],
-//   }),
-//   comments: many(comments),
-// }));
-
-// export const commentsRelations = relations(comments, ({ one }) => ({
-//   post: one(posts, {
-//     fields: [comments.postId],
-//     references: [posts.id],
-//   }),
-// }));
+export const documentsRelations = relations(documents, ({ one }) => ({
+  bookshelf: one(bookshelf, {
+    fields: [documents.bookshelfId],
+    references: [bookshelf.id],
+  }),
+}));

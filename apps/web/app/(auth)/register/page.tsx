@@ -1,5 +1,6 @@
 "use client";
-import { useState, useActionState } from "react";
+import { useState } from "react";
+import { useFormState } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,7 +31,7 @@ function FormButton() {
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [error, formAction] = useActionState(registerUser, undefined);
+  const [error, formAction] = useFormState(registerUser, undefined);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

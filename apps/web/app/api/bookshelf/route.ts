@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { useAuth } from "../../../utils/auth-helper";
-import { and, bookshelf, db, eq, like } from "@repo/database";
+import { and, bookshelf, db, eq, like, users } from "@repo/database";
 
 export async function GET(request: Request) {
   try {
@@ -12,7 +12,12 @@ export async function GET(request: Request) {
     const bookshelves = await db
       .select()
       .from(bookshelf)
-      .where(and(like(bookshelf.title, title!), eq(bookshelf.userId, user.id)));
+      .where(
+        and(
+          eq(bookshelf.userId, user.id),
+          like(bookshelf.title, `%${title ? title : ""}%`)
+        )
+      );
     return NextResponse.json({
       success: true,
       message: "Successfully fetched bookshelves",

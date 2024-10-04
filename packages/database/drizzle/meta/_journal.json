@@ -36,6 +36,41 @@
       "when": 1726946332265,
       "tag": "0004_chunky_nomad",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1727729329645,
+      "tag": "0005_icy_kulan_gath",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1727878515965,
+      "tag": "0006_outgoing_mac_gargan",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1727909228750,
+      "tag": "0007_natural_zombie",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1727957881776,
+      "tag": "0008_solid_carmella_unuscione",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1728077057285,
+      "tag": "0009_cynical_zarek",
+      "breakpoints": true
     }
   ]
 }

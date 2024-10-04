@@ -3,7 +3,7 @@ import { UploadThingError } from "uploadthing/server";
 
 import { authOptions } from "../../../utils/auth-options";
 import { getServerSession } from "next-auth";
-import { db, eq, users } from "@repo/database";
+import { books, bookshelf as bookshelfdb, db, eq, users } from "@repo/database";
 
 const f = createUploadthing();
 
@@ -36,19 +36,32 @@ export const ourFileRouter: FileRouter = {
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
       const user = await auth(req);
+      const bookshelfId = req.headers.get("bookshelfId");
+      if (!bookshelfId)
+        throw new UploadThingError("Please specify the bookshelf");
 
       // If you throw, the user will not be able to upload
       if (!user) throw new UploadThingError("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id };
+      return { userId: user.id, bookshelfId: bookshelfId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.userId);
-
-      console.log("file url", file.url);
-
+      // console.log("Upload complete for userId:", metadata.userId);
+      const bookshelf = (
+        await db
+          .select()
+          .from(bookshelfdb)
+          .where(eq(bookshelfdb.id, parseInt(metadata.bookshelfId)))
+      )[0];
+      if (!bookshelf) throw new Error("Couldn't find bookshelf");
+      if (bookshelf.userId !== metadata.userId) throw new Error("Unauthorized");
+      await db.insert(books).values({
+        fileUrl: file.url,
+        bookshelfId: bookshelf.id,
+        title: file.name,
+      });
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
     }),

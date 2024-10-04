@@ -1,25 +1,11 @@
 "use client";
-
-import { useActionState, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BookOpen, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { addBookshelf } from "./actions";
-import { Input } from "@/components/ui/input";
-
-
-async function bookshelfForm() {
-  const [state, formAction] = useActionState(addBookshelf, undefined);
-  return (
-    <div>
-      <form action={formAction}>
-        <Input type="text" placeholder="Title of the bookshelf" />
-        <Input type="text" placeholder="Description of the bookshelf" />
-        <Button type="submit">Add</Button>
-      </form>
-    </div>
-  );
-}
+import { BookshelfForm } from "./components/bookshelf-form";
+import { DeleteBookshelf } from "./components/bookshelf-form";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<
@@ -29,12 +15,15 @@ export default function Dashboard() {
     {
       id: number;
       title: string;
+      description: string;
     }[]
   >([]);
 
+  const router = useRouter();
+
   async function getBookshelves() {
     try {
-      const response = await fetch("/api/bookshelves");
+      const response = await fetch("/api/bookshelf");
       const data = await response.json();
       setBookshelves(data.bookshelves);
     } catch (error) {
@@ -45,13 +34,6 @@ export default function Dashboard() {
   useEffect(() => {
     getBookshelves();
   }, []);
-
-  // const bookshelves = [
-  //   { id: 1, name: "Fiction", books: 12 },
-  //   { id: 2, name: "Non-fiction", books: 8 },
-  //   { id: 3, name: "Technical", books: 15 },
-  //   { id: 4, name: "Documents", books: 5 },
-  // ];
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -132,7 +114,7 @@ export default function Dashboard() {
                   router.refresh();
                 }}
               /> */}
-              <Button>Create a Bookshelf</Button>
+              <BookshelfForm getBookshelves={getBookshelves} />
             </div>
             <h2 className="text-2xl font-bold mb-4">Bookshelves</h2>
             <ScrollArea className="h-[calc(100vh-12rem)] rounded-md border p-4">
@@ -142,10 +124,25 @@ export default function Dashboard() {
                   className="mb-4 p-4 bg-white rounded-lg shadow"
                 >
                   <h3 className="text-lg font-semibold">{shelf.title}</h3>
-                  {/* <p className="text-sm text-gray-500">{shelf.books} items</p> */}
-                  <Button variant="outline" size="sm" className="mt-2">
-                    View Contents
-                  </Button>
+                  <div className="text-sm text-gray-600">
+                    {shelf.description}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => {
+                        router.push(`/bookshelf/${shelf.id}`);
+                      }}
+                      variant="outline"
+                      size="sm"
+                    >
+                      View Contents
+                    </Button>
+                    <DeleteBookshelf
+                      getBookshelves={getBookshelves}
+                      id={shelf.id}
+                      className="w-fit"
+                    />
+                  </div>
                 </div>
               ))}
             </ScrollArea>
