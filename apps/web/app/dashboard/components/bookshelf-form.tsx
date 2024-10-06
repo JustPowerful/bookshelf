@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import Button3D from "@/components/ui/button3d";
 
 export function DeleteBookshelf({
   id,
@@ -67,9 +68,12 @@ export function BookshelfForm({
         }}
       >
         <DialogTrigger>
-          <Button className="flex items-center gap-2 justify-center">
+          {/* <Button className="flex items-center gap-2 justify-center">
             <BookOpen className="w-4 h-4" /> Create a Bookshelf
-          </Button>
+          </Button> */}
+          <Button3D className="flex items-center gap-2 justify-center">
+            <BookOpen className="w-4 h-4" /> Create a Bookshelf
+          </Button3D>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
