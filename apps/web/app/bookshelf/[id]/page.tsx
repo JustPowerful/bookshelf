@@ -1,14 +1,18 @@
 "use client";
-import { Book, BookOpen, Loader2, Trash } from "lucide-react";
+import { Book, BookOpen, Loader2, Notebook, Trash } from "lucide-react";
 import { UploadButton } from "../../../utils/uploadthing";
 import { books, InferSelectModel } from "@repo/database";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { deleteBook } from "../actions";
 
 import { useFormState } from "react-dom";
 import FormButton from "@/components/ui/form-button";
 import { useEffect } from "react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import Button3D from "@/components/ui/button3d";
+import { useRouter } from "next/navigation";
 
 type BookType = InferSelectModel<typeof books>;
 
@@ -27,6 +31,8 @@ function BookComponent({
     };
   }, [state]);
 
+  const router = useRouter();
+
   return (
     <div className="text-sm bg-slate-900 text-white p-2 rounded-md flex flex-col   gap-2 box-border">
       <div className="flex items-center">
@@ -39,6 +45,17 @@ function BookComponent({
           <Trash className="w-4 h-4" />
         </FormButton>
       </form>
+      <Button3D
+        shadowClass="bg-blue-600"
+        btnClass="text-blue-600 hover:bg-blue-500 hover:text-white border-blue-600"
+        className="flex items-center gap-2 w-full"
+        onClick={() => {
+          router.push(`/notes/${book.id}`);
+        }}
+      >
+        <Notebook className="w-4 h-4" />
+        Navigate to notes
+      </Button3D>
     </div>
   );
 }
@@ -104,13 +121,16 @@ const page = ({ params }: { params: { id: string } }) => {
     refetchOnWindowFocus: false,
   });
 
+  const router = useRouter();
+
   return (
     <div className="p-4">
-      <div className="bg-gradient-to-tr from-slate-600 to-slate-900 text-white p-4 rounded-md mb-4">
+      <div className="flex justify-between bg-gradient-to-tr from-slate-600 to-slate-900 text-white p-4 rounded-md mb-4">
         <h1 className="text-3xl font-bold">
           <BookOpen className="inline mr-2" />
           {bookshelfIsLoading ? "Loading..." : bookshelfData.title}
         </h1>
+
         {error && <small>{error.message}</small>}
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -120,7 +140,7 @@ const page = ({ params }: { params: { id: string } }) => {
           }}
           headers={{ bookshelfId: params.id }}
           endpoint="pdfUploader"
-          className="cursor-pointer w-full bg-slate-900 text-white p-2 rounded-md"
+          className="border-2 border-dashed border-slate-900 p-1 rounded-md"
         />
         <Button
           className="flex items-center justify-center h-full text-xl"
