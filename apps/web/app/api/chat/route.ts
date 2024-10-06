@@ -8,10 +8,6 @@ import { PromptTemplate } from "@langchain/core/prompts";
 import { RunnableSequence } from "@langchain/core/runnables";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 
-export const config = {
-  runtime: "edge",
-};
-
 export async function POST(req: NextRequest) {
   try {
     const { bookshelfId, question } = await req.json();

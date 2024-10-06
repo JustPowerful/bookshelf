@@ -1,0 +1,1 @@
+ALTER TABLE "documents" ADD COLUMN "book_id" integer NOT NULL;

@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LayoutDashboardIcon, Loader2, LogOut } from "lucide-react";
+import { Bot, LayoutDashboardIcon, Loader2, LogOut } from "lucide-react";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -44,8 +44,8 @@ export default function Navbar() {
                         <AvatarFallback>CN</AvatarFallback>
                       </Avatar>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuContent className="flex flex-col">
+                      <DropdownMenuLabel>Menu</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       {/* <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>Billing</DropdownMenuItem>
@@ -61,6 +61,17 @@ export default function Navbar() {
                         <LayoutDashboardIcon className="w-4 h-4 mr-1" />
                         Dashboard
                       </Link>
+                      <Link
+                        href="/chat"
+                        className={cn(
+                          buttonVariants({ variant: "ghost" }),
+                          "w-full"
+                        )}
+                      >
+                        <Bot className="w-4 h-4 mr-1" />
+                        AI Chat
+                      </Link>
+
                       <DropdownMenuSeparator />
                       <button
                         onClick={() => signOut()}

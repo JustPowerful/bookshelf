@@ -71,6 +71,20 @@
       "when": 1728077057285,
       "tag": "0009_cynical_zarek",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1728127597531,
+      "tag": "0010_closed_corsair",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1728233866695,
+      "tag": "0011_curious_vanisher",
+      "breakpoints": true
     }
   ]
 }

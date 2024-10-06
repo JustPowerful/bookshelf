@@ -36,6 +36,16 @@ export async function POST(req: Request) {
 
     // 3. Process each book
     for (const book of booksData) {
+      // Check if the books exist in documents, if so
+      // Skip the current book to save time and avoid duplicate embeddings and avoid additional processing
+      const docs = await db
+        .select()
+        .from(documents)
+        .where(eq(documents.bookId, book.id));
+      if (docs.length > 0) {
+        continue;
+      }
+
       const response = await fetch(book.fileUrl);
       const data = await response.blob();
       // 3a. Load PDF content
@@ -57,6 +67,7 @@ export async function POST(req: Request) {
           bookshelfId: parseInt(bookshelfId),
           content: chunk.pageContent.toString(),
           embedding: chunkEmbedding,
+          bookId: book.id,
         });
       }
     }

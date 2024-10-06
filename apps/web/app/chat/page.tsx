@@ -101,7 +101,11 @@ export default function BookshelfChat() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-64px)] max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Bookshelf Chat</h1>
+      <h1 className="text-2xl font-bold ">Bookshelf Chat</h1>
+      <p className="text-base text-gray-500 mb-4">
+        Select a bookshelf to start chatting with the AI assistant. If you don't
+        have one yet, create one.
+      </p>
 
       <ScrollArea
         className="flex-grow mb-4 p-4 border rounded-md"

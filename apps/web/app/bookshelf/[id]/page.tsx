@@ -1,16 +1,44 @@
 "use client";
-import { Book, BookOpen } from "lucide-react";
+import { Book, BookOpen, Loader2, Trash } from "lucide-react";
 import { UploadButton } from "../../../utils/uploadthing";
 import { books, InferSelectModel } from "@repo/database";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { deleteBook } from "../actions";
+
+import { useFormState } from "react-dom";
+import FormButton from "@/components/ui/form-button";
+import { useEffect } from "react";
 
 type BookType = InferSelectModel<typeof books>;
 
-function BookComponent({ book }: { book: BookType }) {
+function BookComponent({
+  book,
+  reloadBooks,
+}: {
+  book: BookType;
+  reloadBooks: () => Promise<any>;
+}) {
+  const [state, formAction] = useFormState(deleteBook, undefined);
+
+  useEffect(() => {
+    return () => {
+      reloadBooks();
+    };
+  }, [state]);
+
   return (
-    <div className="text-sm bg-slate-900 text-white p-2 rounded-md flex items-center gap-2">
-      <Book /> {book.title}
+    <div className="text-sm bg-slate-900 text-white p-2 rounded-md flex flex-col   gap-2 box-border">
+      <div className="flex items-center">
+        {" "}
+        <Book /> {book.title}
+      </div>
+      <form action={formAction}>
+        <input value={book.id} name="id" className="hidden" />
+        <FormButton className="bg-red-500 hover:bg-red-600 w-full text-white">
+          <Trash className="w-4 h-4" />
+        </FormButton>
+      </form>
     </div>
   );
 }
@@ -84,21 +112,27 @@ const page = ({ params }: { params: { id: string } }) => {
         </h1>
         {error && <small>{error.message}</small>}
       </div>
-      <div className="flex items-center justify-center">
+      <div className="grid grid-cols-2 gap-4">
         <UploadButton
           onClientUploadComplete={() => {
             refetch();
           }}
           headers={{ bookshelfId: params.id }}
           endpoint="pdfUploader"
-          className="cursor-pointer bg-slate-900 text-white w-fit p-2 rounded-md"
+          className="cursor-pointer w-full bg-slate-900 text-white p-2 rounded-md"
         />
         <Button
+          className="flex items-center justify-center h-full text-xl"
           onClick={() => {
             refetchEmbeddings();
           }}
         >
-          Generate Embeddings
+          {" "}
+          {isLoadingEmbeddings ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            "Generate Embeddings"
+          )}
         </Button>
       </div>
       <div>
@@ -106,10 +140,10 @@ const page = ({ params }: { params: { id: string } }) => {
         {isLoading ? (
           "Loading..."
         ) : (
-          <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-4 gap-4 mt-4">
             {data.map((book: BookType) => (
               <a href={book.fileUrl}>
-                <BookComponent book={book} />
+                <BookComponent reloadBooks={refetch} book={book} />
               </a>
             ))}
           </div>
