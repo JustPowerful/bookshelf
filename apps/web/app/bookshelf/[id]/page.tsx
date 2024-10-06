@@ -83,6 +83,7 @@ const page = ({ params }: { params: { id: string } }) => {
   } = useQuery({
     queryKey: ["embeddings"],
     queryFn: generateEmbeddings,
+    enabled: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
