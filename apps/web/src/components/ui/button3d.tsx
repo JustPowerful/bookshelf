@@ -1,20 +1,25 @@
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "./button";
+import { Button, ButtonProps, buttonVariants } from "./button";
 
-export default function Button3D({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className: string;
-}) {
+export default function Button3D(
+  props: ButtonProps & { shadowClass?: string; btnClass?: string }
+) {
   return (
-    <div className={cn("relative group", className)}>
-      <div className="absolute -bottom-1 -right-1 bg-primary opacity-50 rounded-lg w-full h-full"></div>
+    <div className={cn("relative group", props.className)}>
+      <div
+        className={cn(
+          "absolute -bottom-1 -right-1 bg-primary opacity-50 rounded-lg w-full h-full",
+          props.shadowClass
+        )}
+      ></div>
       <Button
-        className={cn(buttonVariants({ variant: "button3d", className }))}
+        {...props}
+        className={cn(
+          buttonVariants({ variant: "button3d", className: props.className }),
+          props.btnClass
+        )}
       >
-        {children}
+        {props.children}
       </Button>
     </div>
   );
